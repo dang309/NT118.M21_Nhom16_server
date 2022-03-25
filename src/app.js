@@ -68,6 +68,8 @@ if (config.env === 'production') {
 
 app.get('/', (_, res) => res.redirect('/v1/docs'));
 
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 // v1 api routes
 app.use('/v1', routes);
 
