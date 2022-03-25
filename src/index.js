@@ -1,17 +1,17 @@
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const app = require('./app');
-// const config = require('./config/config');
+const config = require('./config/config');
 const logger = require('./config/logger');
 
-// mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
-//   logger.info('Connected to MongoDB');
-//   server = app.listen(config.port, () => {
-//     logger.info(`Listening to port ${config.port}`);
-//   });
-// });
+let server;
 
-const server = app.listen(process.env.PORT || 5000, () => {
-  logger.info(`Listening to port ${process.env.PORT || 5000}`);
+const PORT = process.env.PORT || 5000;
+
+mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
+  logger.info('Connected to MongoDB');
+  server = app.listen(PORT, () => {
+    logger.info(`Listening to port ${PORT}`);
+  });
 });
 
 const exitHandler = () => {
