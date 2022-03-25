@@ -11,7 +11,7 @@ const logger = require('./config/logger');
 // });
 
 const server = app.listen(config.port, () => {
-  logger.info(`Listening to port ${process.env.PORT || config.port}`);
+  logger.info(`Listening to port ${process.env.PORT || 5000}`);
 });
 
 const exitHandler = () => {
