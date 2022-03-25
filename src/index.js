@@ -1,6 +1,6 @@
 // const mongoose = require('mongoose');
 const app = require('./app');
-const config = require('./config/config');
+// const config = require('./config/config');
 const logger = require('./config/logger');
 
 // mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
@@ -10,7 +10,7 @@ const logger = require('./config/logger');
 //   });
 // });
 
-const server = app.listen(config.port, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
   logger.info(`Listening to port ${process.env.PORT || 5000}`);
 });
 
