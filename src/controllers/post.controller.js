@@ -1,13 +1,19 @@
 const HTTP_STATUS = require('http-status');
-const fs = require('fs');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
 const { postService } = require('../services');
+const s3 = require('../config/s3');
 
 const createPost = catchAsync(async (req, res) => {
   const data = Object.assign(req.body, {
-    sound: req.files.sound[0].path,
-    thumbnail: req.files.thumbnail && req.files.thumbnail[0].path,
+    sound: {
+      bucket: req.files.sound[0].bucket,
+      key: req.files.sound[0].key,
+    },
+    thumbnail: {
+      bucket: req.files.thumbnail && req.files.thumbnail[0].bucket,
+      key: req.files.thumbnail && req.files.thumbnail[0].key,
+    },
   });
   const post = await postService.createPost(data);
   res.status(HTTP_STATUS.CREATED).send(post);
@@ -27,26 +33,12 @@ const getPost = catchAsync(async (req, res) => {
 
 const getSound = catchAsync(async (req, res) => {
   const post = await postService.getPostById(req.params.postId);
-  const readStream = fs.createReadStream(post.sound);
-  readStream.on('open', function () {
-    readStream.pipe(res);
-  });
-
-  readStream.on('error', function (err) {
-    res.end(err);
-  });
+  s3.getObject({ Bucket: post.sound.bucket, Key: post.sound.key }).createReadStream().pipe(res);
 });
 
 const getThumbnail = catchAsync(async (req, res) => {
   const post = await postService.getPostById(req.params.postId);
-  const readStream = fs.createReadStream(post.thumbnail);
-  readStream.on('open', function () {
-    readStream.pipe(res);
-  });
-
-  readStream.on('error', function (err) {
-    res.end(err);
-  });
+  s3.getObject({ Bucket: post.thumbnail.bucket, Key: post.thumbnail.key }).createReadStream().pipe(res);
 });
 
 const updatePost = catchAsync(async (req, res) => {

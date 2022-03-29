@@ -1,20 +1,35 @@
 const express = require('express');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const { v4 } = require('uuid');
 const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
 const userController = require('../../controllers/user.controller');
+const auth = require('../../middlewares/auth');
+const s3 = require('../../config/s3');
 
 const router = express.Router();
 
+const upload = multer({
+  storage: multerS3({
+    s3,
+    bucket: 'nt118-m21-nhom16',
+    key: (req, file, cb) => {
+      cb(null, `avatars/${v4()}__${file.originalname}`);
+    },
+  }),
+});
+
 router
   .route('/')
-  .post(validate(userValidation.createUser), userController.createUser)
-  .get(validate(userValidation.getUsers), userController.getUsers);
+  .post(auth, validate(userValidation.createUser), userController.createUser)
+  .get(auth, validate(userValidation.getUsers), userController.getUsers);
 
 router
   .route('/:userId')
-  .get(validate(userValidation.getUser), userController.getUser)
-  .patch(validate(userValidation.updateUser), userController.updateUser)
-  .delete(validate(userValidation.deleteUser), userController.deleteUser);
+  .get(auth, validate(userValidation.getUser), userController.getUser)
+  .put(auth, upload.single('avatar'), userController.updateUser)
+  .delete(auth, validate(userValidation.deleteUser), userController.deleteUser);
 
 module.exports = router;
 

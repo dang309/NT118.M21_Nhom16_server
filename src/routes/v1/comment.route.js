@@ -1,5 +1,7 @@
 const express = require('express');
+
 // const multer = require('multer');
+const auth = require('../../middlewares/auth');
 
 const commentController = require('../../controllers/comment.controller');
 
@@ -16,10 +18,10 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(commentController.getCommentByPostId)
-  .post(commentController.createComment)
-  .put(commentController.updateComment)
-  .delete(commentController.deleteComment);
+  .get(auth, commentController.getCommentByPostId)
+  .post(auth, commentController.createComment)
+  .put(auth, commentController.updateComment)
+  .delete(auth, commentController.deleteComment);
 
 module.exports = router;
 

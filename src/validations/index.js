@@ -1,3 +1,3 @@
-module.exports.authValidation = require('./auth.validation');
-module.exports.userValidation = require('./user.validation');
-module.exports.postValidation = require('./post.validation');
+export const authValidation = require('./auth.validation');
+export const userValidation = require('./user.validation');
+export const postValidation = require('./post.validation');

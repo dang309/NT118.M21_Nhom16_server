@@ -9,13 +9,16 @@ const httpStatus = require('http-status');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const config = require('./config/config');
-const morgan = require('./config/morgan');
+const MORGAN = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const { postEvents } = require('./events');
+const { authenticator } = require('otplib');
+
+authenticator.options = { step: 10000 };
 
 const app = express();
 
@@ -33,8 +36,8 @@ const onConnection = (socket) => {
 io.on('connection', onConnection);
 
 if (config.env !== 'test') {
-  app.use(morgan.successHandler);
-  app.use(morgan.errorHandler);
+  app.use(MORGAN.successHandler);
+  app.use(MORGAN.errorHandler);
 }
 
 // set security HTTP headers

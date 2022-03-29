@@ -25,7 +25,13 @@ const getUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const user = await userService.updateUserById(req.params.userId, req.body);
+  const data = Object.assign(req.body, {
+    avatar: {
+      bucket: req.file.bucket,
+      key: req.file.key,
+    },
+  });
+  const user = await userService.updateUserById(req.params.userId, data);
   res.send(user);
 });
 

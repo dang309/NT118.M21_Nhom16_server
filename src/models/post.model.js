@@ -13,11 +13,22 @@ const postSchema = mongoose.Schema(
       default: '',
     },
     sound: {
-      type: String,
+      bucket: {
+        type: String,
+      },
+      key: {
+        type: String,
+      },
     },
     thumbnail: {
-      type: String,
-      default: '',
+      bucket: {
+        type: String,
+        default: '',
+      },
+      key: {
+        type: String,
+        default: '',
+      },
     },
     users_like: {
       type: Array,
@@ -30,7 +41,7 @@ const postSchema = mongoose.Schema(
     hashtag: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hashtag',
-      default: '',
+      default: null,
     },
     genre: {
       type: String,

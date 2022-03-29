@@ -1,37 +1,48 @@
 const express = require('express');
 const multer = require('multer');
+const multerS3 = require('multer-s3');
+const { v4 } = require('uuid');
 const validate = require('../../middlewares/validate');
 const postValidation = require('../../validations/post.validation');
 const postController = require('../../controllers/post.controller');
+const auth = require('../../middlewares/auth');
+const s3 = require('../../config/s3');
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, `./assets/${file.fieldname}s`);
-  },
-  filename(req, file, cb) {
-    cb(null, `${req.body.post_id}__${file.originalname}`);
-  },
+const upload = multer({
+  storage: multerS3({
+    s3,
+    bucket: 'nt118-m21-nhom16',
+    key: (req, file, cb) => {
+      if (file.fieldname === 'sound') {
+        cb(null, `sounds/${v4()}__${file.originalname}`);
+      }
+      if (file.fieldname === 'thumbnail') {
+        cb(null, `thumbnails/${v4()}__${file.originalname}`);
+      }
+    },
+  }),
 });
 
 router
   .route('/')
-  .get(validate(postValidation.getPosts), postController.getPosts)
+  .get(auth, validate(postValidation.getPosts), postController.getPosts)
   .post(
-    multer({ storage }).fields([
+    auth,
+    upload.fields([
       { name: 'sound', maxcount: 1 },
       { name: 'thumbnail', maxCount: 1 },
     ]),
     postController.createPost
   )
-  .put(validate(postValidation.updatePost, postController.updatePost))
-  .delete(validate(postValidation.deletePost), postController.deletePost);
+  .put(auth, validate(postValidation.updatePost, postController.updatePost))
+  .delete(auth, validate(postValidation.deletePost), postController.deletePost);
 
-router.get('/sound/:postId', postController.getSound);
-router.get('/thumbnail/:postId', postController.getThumbnail);
+router.get('/sound/:postId', auth, postController.getSound);
+router.get('/thumbnail/:postId', auth, postController.getThumbnail);
 
-router.route('/:postId').get(validate(postValidation.getPost), postController.getPost);
+router.route('/:postId').get(auth, validate(postValidation.getPost), postController.getPost);
 
 module.exports = router;
 

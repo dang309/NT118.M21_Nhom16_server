@@ -11,13 +11,13 @@ const commentSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    image: {
-      type: String,
-      default: '',
-    },
     user_comment_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+    },
+    users_like: {
+      type: [String],
+      default: [],
     },
   },
   {

@@ -44,8 +44,14 @@ const userSchema = mongoose.Schema(
       default: '',
     },
     avatar: {
-      type: String,
-      default: '',
+      bucket: {
+        type: String,
+        default: '',
+      },
+      key: {
+        type: String,
+        default: '',
+      },
     },
     following: {
       type: [String],

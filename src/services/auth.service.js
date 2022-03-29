@@ -1,9 +1,12 @@
 const httpStatus = require('http-status');
+const { totp } = require('otplib');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+
+const { verifyOTPToken } = require('../utils/2fa');
 
 /**
  * Login with username and password
@@ -53,21 +56,23 @@ const refreshAuth = async (refreshToken) => {
 
 /**
  * Reset password
- * @param {string} resetPasswordToken
+ * @param {string} email
+ * @param {number} otp
  * @param {string} newPassword
  * @returns {Promise}
  */
-const resetPassword = async (resetPasswordToken, newPassword) => {
+const resetPassword = async (email, otp, newPassword) => {
   try {
-    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    if (!verifyOTPToken(otp, email + process.env.TOTP_SECRET)) {
+      throw new Error('OTP không hợp lệ!');
+    }
+    const user = await userService.getUserByEmail(email);
     if (!user) {
-      throw new Error();
+      throw new Error('Người dùng không tồn tại!');
     }
     await userService.updateUserById(user.id, { password: newPassword });
-    await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Thiết lập mật khẩu mới thất bại!');
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
   }
 };
 
@@ -76,17 +81,18 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
  * @param {string} verifyEmailToken
  * @returns {Promise}
  */
-const verifyEmail = async (verifyEmailToken) => {
+const verifyEmail = async (otp, email) => {
   try {
-    const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
+    if (!verifyOTPToken(otp, email + process.env.TOTP_SECRET)) {
+      throw new Error('OTP không hợp lệ!');
+    }
     const user = await userService.getUserById(verifyEmailTokenDoc.user);
     if (!user) {
-      throw new Error();
+      throw new Error('Người dùng không tồn tại!');
     }
-    await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
     await userService.updateUserById(user.id, { is_email_verified: true });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Xác thực email thất bại!');
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
   }
 };
 

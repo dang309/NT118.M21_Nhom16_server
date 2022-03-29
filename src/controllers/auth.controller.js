@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
+const { authenticator } = require('otplib');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+
+const { generateToken, verifyOTPToken } = require('../utils/2fa');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -26,24 +29,24 @@ const refreshTokens = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
-  const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
+  const token = generateToken(req.body.email + process.env.TOTP_SECRET);
+  await emailService.sendResetPasswordEmail(req.body.email, token);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  await authService.resetPassword(req.query.token, req.body.password);
+  await authService.resetPassword(req.body.email, req.body.otp, req.body.password);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
-  const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
-  await emailService.sendVerificationEmail(req.user.email, verifyEmailToken);
+  const timeOTP = totp.generate(req.user.email + process.env.TOTP_SECRET);
+  await emailService.sendVerificationEmail(req.user.email, timeOTP);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
 const verifyEmail = catchAsync(async (req, res) => {
-  await authService.verifyEmail(req.query.token);
+  await authService.verifyEmail(req.body.otp, req.body.email);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
