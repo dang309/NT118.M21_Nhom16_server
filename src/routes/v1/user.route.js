@@ -43,56 +43,6 @@ module.exports = router;
 /**
  * @swagger
  * /users:
- *   post:
- *     summary: Create a user
- *     description: Only admins can create other users.
- *     tags: [Users]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - username
- *               - email
- *               - password
- *               - role
- *             properties:
- *               username:
- *                 type: string
- *               email:
- *                 type: string
- *                 format: email
- *                 description: must be unique
- *               password:
- *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
- *               role:
- *                  type: string
- *                  enum: [user, admin]
- *             example:
- *               username: fake name
- *               email: fake@example.com
- *               password: password1
- *     responses:
- *       "201":
- *         description: Created
- *         content:
- *           application/json:
- *             schema:
- *                $ref: '#/components/schemas/User'
- *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
- *
  *   get:
  *     summary: Get all users
  *     description: Only admins can retrieve all users.
@@ -188,9 +138,9 @@ module.exports = router;
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  *
- *   patch:
+ *   put:
  *     summary: Update a user
- *     description: Logged in users can only update their own information. Only admins can update other users.
+ *     description: Logged in users can only update their own information.
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -204,7 +154,7 @@ module.exports = router;
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -213,16 +163,16 @@ module.exports = router;
  *               email:
  *                 type: string
  *                 format: email
- *                 description: must be unique
- *               password:
+ *               bio:
  *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
+ *               avatar:
+ *                 type: string
+ *                 format: binary
  *             example:
  *               username: fake name
  *               email: fake@example.com
- *               password: password1
+ *               bio: lorem ipsum
+ *               avatar: https://image.png
  *     responses:
  *       "200":
  *         description: OK

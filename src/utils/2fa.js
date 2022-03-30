@@ -1,7 +1,5 @@
 const { totp } = require('otplib');
 
-totp.options = { step: 100 };
-
 const generateUniqueSecret = () => {
   return totp.generateSecret();
 };

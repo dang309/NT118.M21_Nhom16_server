@@ -10,15 +10,13 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const config = require('./config/config');
 const MORGAN = require('./config/morgan');
-const { jwtStrategy } = require('./config/passport');
+const { jwtStrategy, ggStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const { postEvents } = require('./events');
 const { authenticator } = require('otplib');
-
-authenticator.options = { step: 10000 };
 
 const app = express();
 
@@ -63,6 +61,7 @@ app.options('*', cors());
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
+passport.use(ggStrategy);
 
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
@@ -75,6 +74,9 @@ app.get('/favicon.ico', (req, res) => res.status(204));
 
 // v1 api routes
 app.use('/v1', routes);
+
+app.get('/v1/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.get('/v1/auth/google/callback', passport.authenticate('google'));
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

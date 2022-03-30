@@ -210,13 +210,6 @@ module.exports = router;
  *   post:
  *     summary: Reset password
  *     tags: [Auth]
- *     parameters:
- *       - in: query
- *         name: token
- *         required: true
- *         schema:
- *           type: string
- *         description: The reset password token
  *     requestBody:
  *       required: true
  *       content:
@@ -224,14 +217,24 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
+ *               - email
+ *               - otp
  *               - password
  *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               otp:
+ *                 type: string
  *               password:
  *                 type: string
  *                 format: password
  *                 minLength: 8
  *                 description: At least one number and one letter
+ *
  *             example:
+ *               email: example@gmail.com
+ *               otp: "123456"
  *               password: password1
  *     responses:
  *       "204":
@@ -269,13 +272,24 @@ module.exports = router;
  *   post:
  *     summary: verify email
  *     tags: [Auth]
- *     parameters:
- *       - in: query
- *         name: token
- *         required: true
- *         schema:
- *           type: string
- *         description: The verify email token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - otp
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               otp:
+ *                 type: string
+ *             example:
+ *               email: example@gmail.com
+ *               otp: "123456"
  *     responses:
  *       "204":
  *         description: No content

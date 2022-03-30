@@ -12,7 +12,7 @@ const swaggerDef = {
   },
   servers: [
     {
-      url: `https://nt118-m21-nhom16-api.herokuapp.com/v1`,
+      url: `https://api-nhom16.herokuapp.com/v1`,
     },
   ],
 };
