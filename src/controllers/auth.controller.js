@@ -22,7 +22,7 @@ const login = catchAsync(async (req, res) => {
 
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send(RES(httpStatus.NO_CONTENT, '', true, null));
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
@@ -33,23 +33,23 @@ const refreshTokens = catchAsync(async (req, res) => {
 const forgotPassword = catchAsync(async (req, res) => {
   const token = generateToken(req.body.email + process.env.TOTP_SECRET);
   await emailService.sendResetPasswordEmail(req.body.email, token);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send(RES(httpStatus.NO_CONTENT, '', true, null));
 });
 
 const resetPassword = catchAsync(async (req, res) => {
   await authService.resetPassword(req.body.email, req.body.otp, req.body.password);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send(RES(httpStatus.NO_CONTENT, '', true, null));
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
   const timeOTP = totp.generate(req.user.email + process.env.TOTP_SECRET);
   await emailService.sendVerificationEmail(req.user.email, timeOTP);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send(RES(httpStatus.NO_CONTENT, '', true, null));
 });
 
 const verifyEmail = catchAsync(async (req, res) => {
   await authService.verifyEmail(req.body.otp, req.body.email);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send(RES(httpStatus.NO_CONTENT, '', true, null));
 });
 
 module.exports = {
