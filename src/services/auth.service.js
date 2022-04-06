@@ -61,11 +61,8 @@ const refreshAuth = async (refreshToken) => {
  * @param {string} newPassword
  * @returns {Promise}
  */
-const resetPassword = async (email, otp, newPassword) => {
+const resetPassword = async (email, newPassword) => {
   try {
-    if (!verifyOTPToken(otp, email + process.env.TOTP_SECRET)) {
-      throw new Error('OTP không hợp lệ!');
-    }
     const user = await userService.getUserByEmail(email);
     if (!user) {
       throw new Error('Người dùng không tồn tại!');
