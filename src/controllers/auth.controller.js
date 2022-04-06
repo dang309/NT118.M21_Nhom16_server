@@ -31,7 +31,7 @@ const refreshTokens = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
-  const token = generateToken(req.body.email + process.env.TOTP_SECRET);
+  const token = generateToken(process.env.TOTP_SECRET);
   await emailService.sendResetPasswordEmail(req.body.email, token);
   res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
@@ -48,7 +48,7 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
 });
 
 const verifyEmail = catchAsync(async (req, res) => {
-  await authService.verifyEmail(req.body.otp, req.body.email);
+  await authService.verifyEmail(req.body.otp);
   res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
 

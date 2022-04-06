@@ -75,19 +75,15 @@ const resetPassword = async (email, newPassword) => {
 
 /**
  * Verify email
- * @param {string} verifyEmailToken
+ * @param {string} otp
+ * @param {string} email
  * @returns {Promise}
  */
-const verifyEmail = async (otp, email) => {
+const verifyEmail = async (otp) => {
   try {
-    if (!verifyOTPToken(otp, email + process.env.TOTP_SECRET)) {
+    if (!verifyOTPToken(otp, process.env.TOTP_SECRET)) {
       throw new Error('OTP không hợp lệ!');
     }
-    const user = await userService.getUserById(verifyEmailTokenDoc.user);
-    if (!user) {
-      throw new Error('Người dùng không tồn tại!');
-    }
-    await userService.updateUserById(user.id, { is_email_verified: true });
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error.message);
   }
