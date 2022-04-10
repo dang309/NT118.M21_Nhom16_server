@@ -81,6 +81,7 @@ const resetPassword = async (email, newPassword) => {
  */
 const verifyEmail = async (otp) => {
   try {
+    logger.log('haidang', process.env.TOTP_SECRET);
     if (!verifyOTPToken(otp, process.env.TOTP_SECRET)) {
       throw new Error('OTP không hợp lệ!');
     }
