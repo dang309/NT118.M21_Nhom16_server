@@ -1,9 +1,9 @@
 const httpStatus = require('http-status');
-const { authenticator } = require('otplib');
+const { totp } = require('otplib');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 
-const { generateToken, verifyOTPToken } = require('../utils/2fa');
+const { generateToken } = require('../utils/2fa');
 
 const { RES } = require('../utils/RES');
 

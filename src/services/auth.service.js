@@ -4,7 +4,6 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-const logger = require('../config/logger');
 const { verifyOTPToken } = require('../utils/2fa');
 
 /**
@@ -80,7 +79,6 @@ const resetPassword = async (email, newPassword) => {
  */
 const verifyEmail = async (otp) => {
   try {
-    logger.log('haidang', process.env.TOTP_SECRET);
     if (!verifyOTPToken(otp, process.env.TOTP_SECRET)) {
       throw new Error('OTP không hợp lệ!');
     }
