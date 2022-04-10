@@ -1,11 +1,10 @@
 const httpStatus = require('http-status');
-const { totp } = require('otplib');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-
+const logger = require('../config/logger');
 const { verifyOTPToken } = require('../utils/2fa');
 
 /**
