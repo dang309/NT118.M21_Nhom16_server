@@ -6,6 +6,7 @@ const { authService, userService, tokenService, emailService } = require('../ser
 const { generateToken } = require('../utils/2fa');
 
 const { RES } = require('../utils/RES');
+const logger = require('../config/logger');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -32,6 +33,7 @@ const refreshTokens = catchAsync(async (req, res) => {
 
 const forgotPassword = catchAsync(async (req, res) => {
   const token = generateToken(process.env.TOTP_SECRET);
+  logger.info(process.env.TOTP_SECRET);
   await emailService.sendResetPasswordEmail(req.body.email, token);
   res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
