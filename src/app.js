@@ -21,9 +21,7 @@ const { postEvents } = require('./events');
 const app = express();
 
 totp.options = {
-  epoch: Date.now(),
-  step: 30,
-  window: 0,
+  step: 60 * 5, // 5 minutes
 };
 
 const httpServer = createServer(app);
