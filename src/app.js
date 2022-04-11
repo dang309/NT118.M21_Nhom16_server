@@ -8,6 +8,7 @@ const passport = require('passport');
 const httpStatus = require('http-status');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const { totp } = require('otplib');
 const config = require('./config/config');
 const MORGAN = require('./config/morgan');
 const { jwtStrategy, ggStrategy } = require('./config/passport');
@@ -16,9 +17,14 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const { postEvents } = require('./events');
-const { authenticator } = require('otplib');
 
 const app = express();
+
+totp.options = {
+  epoch: Date.now(),
+  step: 30,
+  window: 0,
+};
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
