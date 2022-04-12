@@ -39,12 +39,14 @@ const postSchema = mongoose.Schema(
       default: [],
     },
     hashtag: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: 'Hashtag',
-      default: null,
+      default: [],
     },
     genre: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Genre',
+      default: null,
     },
   },
   {

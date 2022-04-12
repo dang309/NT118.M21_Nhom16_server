@@ -4,3 +4,4 @@ module.exports.Post = require('./post.model');
 module.exports.Comment = require('./comment.model');
 module.exports.Notification = require('./notification.model');
 module.exports.Hashtag = require('./hashtag.model');
+module.exports.Genre = require('./genre.model');
