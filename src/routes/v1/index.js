@@ -4,8 +4,8 @@ const userRoute = require('./user.route');
 const postRoute = require('./post.route');
 const commentRoute = require('./comment.route');
 const genreRoute = require('./genre.route');
+const hashtagRoute = require('./hashtag.route');
 const docsRoute = require('./docs.route');
-// const config = require('../../config/config');
 
 const router = express.Router();
 
@@ -29,6 +29,10 @@ const defaultRoutes = [
   {
     path: '/genres',
     route: genreRoute,
+  },
+  {
+    path: '/hashtags',
+    route: hashtagRoute,
   },
   {
     path: '/docs',

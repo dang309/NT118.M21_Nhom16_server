@@ -169,33 +169,6 @@ module.exports = router;
 /**
  * @swagger
  * /posts/{id}:
- *   get:
- *     summary: Get a post
- *     description: Logged in posts can fetch only their own post information. Only admins can fetch other posts.
- *     tags: [Posts]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Post id
- *     responses:
- *       "200":
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *                $ref: '#/components/schemas/Post'
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
- *
  *   put:
  *     summary: Update a post
  *     description: Logged in posts can only update their own information. Only admins can update other posts.

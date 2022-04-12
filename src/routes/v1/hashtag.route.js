@@ -2,42 +2,33 @@ const express = require('express');
 
 const auth = require('../../middlewares/auth');
 
-const genreController = require('../../controllers/genre.controller');
+const hashtagController = require('../../controllers/hashtag.controller');
 
 const router = express.Router();
 
-// const storage = multer.diskStorage({
-//   destination(req, file, cb) {
-//     cb(null, `./assets/${file.fieldname}s`);
-//   },
-//   filename(req, file, cb) {
-//     cb(null, `${req.body.post_id}__${file.originalname}`);
-//   },
-// });
-
 router
   .route('/')
-  .get(auth, genreController.getAllGenres)
-  .post(auth, genreController.createGenre)
-  .put(auth, genreController.updateGenre)
-  .delete(auth, genreController.deleteGenre);
+  .get(auth, hashtagController.getAllHashtags)
+  .post(auth, hashtagController.createHashtag)
+  .put(auth, hashtagController.updateHashtag)
+  .delete(auth, hashtagController.deleteHashtag);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Genres
- *   description: Genre management and retrieval
+ *   name: Hashtags
+ *   description: Hashtag management and retrieval
  */
 
 /**
  * @swagger
- * /genres:
+ * /hashtags:
  *   post:
- *     summary: Create a genre
- *     description: Only admins can create other genres.
- *     tags: [Genres]
+ *     summary: Create a hashtag
+ *     description: Only admins can create other hashtags.
+ *     tags: [Hashtags]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -57,16 +48,16 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Genre'
+ *                $ref: '#/components/schemas/Hashtag'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all genres
- *     description: Only admins can retrieve all genres.
- *     tags: [Genres]
+ *     summary: Get all hashtags
+ *     description: Only admins can retrieve all hashtags.
+ *     tags: [Hashtags]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -80,7 +71,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Genre'
+ *                     $ref: '#/components/schemas/Hashtag'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -101,11 +92,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /genres/{id}:
+ * /hashtags/{id}:
  *   put:
- *     summary: Update a genre
- *     description: Logged in genres can only update their own information. Only admins can update other genres.
- *     tags: [Genres]
+ *     summary: Update a hashtag
+ *     description: Logged in hashtags can only update their own information. Only admins can update other hashtags.
+ *     tags: [Hashtags]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -114,7 +105,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Genre id
+ *         description: Hashtag id
  *     requestBody:
  *       required: true
  *       content:
@@ -122,7 +113,7 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               genrename:
+ *               hashtagname:
  *                 type: string
  *               email:
  *                 type: string
@@ -134,7 +125,7 @@ module.exports = router;
  *                 minLength: 8
  *                 description: At least one number and one letter
  *             example:
- *               genrename: fake name
+ *               hashtagname: fake name
  *               email: fake@example.com
  *               password: password1
  *     responses:
@@ -143,7 +134,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Genre'
+ *                $ref: '#/components/schemas/Hashtag'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -154,9 +145,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a genre
- *     description: Logged in genres can delete only themselves. Only admins can delete other genres.
- *     tags: [Genres]
+ *     summary: Delete a hashtag
+ *     description: Logged in hashtags can delete only themselves. Only admins can delete other hashtags.
+ *     tags: [Hashtags]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -165,7 +156,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Genre id
+ *         description: Hashtag id
  *     responses:
  *       "200":
  *         description: No content
