@@ -3,9 +3,11 @@ const { password, objectId } = require('./custom.validation');
 
 const createPost = {
   body: Joi.object().keys({
-    sound: Joi.binary().required(),
-    hashtag: Joi.string().required(),
-    genre: Joi.string().required(),
+    user_id: Joi.string().required(),
+    caption: Joi.string().required(),
+    sound: Joi.string().required(),
+    thumbnail: Joi.string().required(),
+    genre_id: Joi.string().required(),
   }),
 };
 
