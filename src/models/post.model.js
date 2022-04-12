@@ -39,9 +39,9 @@ const postSchema = mongoose.Schema(
       default: [],
     },
     hashtag_id: {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Hashtag',
-      default: [],
+      default: null,
     },
     genre_id: {
       type: mongoose.Schema.Types.ObjectId,
