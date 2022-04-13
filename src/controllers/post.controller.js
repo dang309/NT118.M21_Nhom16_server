@@ -3,6 +3,7 @@ const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
 const { postService } = require('../services');
 const s3 = require('../config/s3');
+const { RES } = require('../utils/RES');
 
 const createPost = catchAsync(async (req, res) => {
   const data = Object.assign(req.body, {
@@ -16,14 +17,14 @@ const createPost = catchAsync(async (req, res) => {
     },
   });
   const post = await postService.createPost(data);
-  res.status(HTTP_STATUS.CREATED).send(post);
+  res.status(HTTP_STATUS.CREATED).send(RES(HTTP_STATUS.CREATED, '', true, post));
 });
 
 const getPosts = catchAsync(async (req, res) => {
   // const filter = pick(req.query, ['user_id']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await postService.queryPosts(false, options);
-  res.send(result);
+  res.send(RES(HTTP_STATUS.OK, '', true, result));
 });
 
 const getPost = catchAsync(async (req, res) => {
@@ -43,12 +44,12 @@ const getThumbnail = catchAsync(async (req, res) => {
 
 const updatePost = catchAsync(async (req, res) => {
   const post = await postService.updatePostById(req.params.postId, req.body);
-  res.send(post);
+  res.send(RES(HTTP_STATUS.OK, '', true, post));
 });
 
 const deletePost = catchAsync(async (req, res) => {
   await postService.deletePostById(req.params.postId);
-  res.status(HTTP_STATUS.NO_CONTENT).send();
+  res.status(HTTP_STATUS.OK).send(RES(HTTP_STATUS.OK, '', true, null));
 });
 
 module.exports = {

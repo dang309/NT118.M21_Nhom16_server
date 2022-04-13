@@ -27,7 +27,7 @@ const upload = multer({
 
 router
   .route('/')
-  .get(auth, validate(postValidation.getPosts), postController.getPosts)
+  .get(auth, postController.getPosts)
   .post(
     auth,
     upload.fields([
