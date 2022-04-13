@@ -1,5 +1,4 @@
 const HTTP_STATUS = require('http-status');
-const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
 const { postService } = require('../services');
 const s3 = require('../config/s3');
