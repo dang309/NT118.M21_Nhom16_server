@@ -8,14 +8,14 @@ const { RES } = require('../utils/RES');
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  res.status(httpStatus.CREATED).send(RES(httpStatus.CREATED, '', true, user));
 });
 
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['username']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.queryUsers(filter, options);
-  res.send(result);
+  res.send(RES(httpStatus.OK, '', true, result));
 });
 
 const getUser = catchAsync(async (req, res) => {
@@ -23,7 +23,7 @@ const getUser = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  res.send(user);
+  res.send(RES(httpStatus.OK, '', true, user));
 });
 
 const updateUser = catchAsync(async (req, res) => {
@@ -34,12 +34,12 @@ const updateUser = catchAsync(async (req, res) => {
     },
   });
   const user = await userService.updateUserById(req.params.userId, data);
-  res.send(user);
+  res.send(RES(httpStatus.OK, '', true, user));
 });
 
 const deleteUser = catchAsync(async (req, res) => {
   await userService.deleteUserById(req.params.userId);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
 
 module.exports = {
