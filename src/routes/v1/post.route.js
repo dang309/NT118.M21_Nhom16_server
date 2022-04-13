@@ -36,8 +36,8 @@ router
     ]),
     postController.createPost
   )
-  .put(auth, validate(postValidation.updatePost, postController.updatePost))
-  .delete(auth, validate(postValidation.deletePost), postController.deletePost);
+  .put(auth, postController.updatePost)
+  .delete(auth, postController.deletePost);
 
 router.get('/sound/:postId', auth, postController.getSound);
 router.get('/thumbnail/:postId', auth, postController.getThumbnail);
