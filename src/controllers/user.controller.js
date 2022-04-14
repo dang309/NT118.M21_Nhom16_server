@@ -26,6 +26,11 @@ const getUser = catchAsync(async (req, res) => {
   res.send(RES(httpStatus.OK, '', true, user));
 });
 
+const getAvatar = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.userId);
+  s3.getObject({ Bucket: user.avatar.bucket, Key: user.avatar.key }).createReadStream().pipe(res);
+});
+
 const updateUser = catchAsync(async (req, res) => {
   const data = Object.assign(req.body, {
     avatar: {
@@ -46,6 +51,7 @@ module.exports = {
   createUser,
   getUsers,
   getUser,
+  getAvatar,
   updateUser,
   deleteUser,
 };

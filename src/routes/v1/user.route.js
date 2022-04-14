@@ -25,6 +25,8 @@ router
   .post(auth, validate(userValidation.createUser), userController.createUser)
   .get(auth, validate(userValidation.getUsers), userController.getUsers);
 
+router.get('/avatar/:userId', userController.getAvatar)
+
 router
   .route('/:userId')
   .get(auth, validate(userValidation.getUser), userController.getUser)
