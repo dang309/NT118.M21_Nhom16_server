@@ -20,6 +20,7 @@ const postSchema = mongoose.Schema(
         type: String,
       },
     },
+    title: { type: String },
     thumbnail: {
       bucket: {
         type: String,
