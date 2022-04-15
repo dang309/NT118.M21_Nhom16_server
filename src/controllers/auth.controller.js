@@ -34,7 +34,7 @@ const refreshTokens = catchAsync(async (req, res) => {
 const forgotPassword = catchAsync(async (req, res) => {
   const token = generateToken(process.env.TOTP_SECRET);
   logger.info(process.env.TOTP_SECRET);
-  await emailService.sendResetPasswordEmail(req.body.email, token);
+  await emailService.sendVerificationEmail(req.body.email, token);
   res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
 
