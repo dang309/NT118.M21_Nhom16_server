@@ -3,6 +3,7 @@ const { postService } = require('../services');
 module.exports = (io, socket) => {
   const likePost = async (payload) => {
     const post = await postService.getPostById(payload.postId);
+    if (!post) return;
     if (post.users_like.some((o) => o === payload.userId)) {
       const idx = post.users_like.indexOf(payload.userId);
       post.users_like.splice(idx, 1);
@@ -11,7 +12,7 @@ module.exports = (io, socket) => {
     }
     await post.save();
 
-    socket.emit('post:num_like', { num_like: post.users_like.length() });
+    socket.emit('post:num_like', { num_like: post.users_like.length });
 
     return post;
   };
@@ -26,7 +27,7 @@ module.exports = (io, socket) => {
     }
     await post.save();
 
-    socket.emit('post:num_listening', { num_listening: post.users_listening.length() });
+    socket.emit('post:num_listening', { num_listening: post.users_listening.length });
 
     return post;
   };
