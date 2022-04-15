@@ -1,24 +1,14 @@
 const express = require('express');
 
-// const multer = require('multer');
 const auth = require('../../middlewares/auth');
 
 const commentController = require('../../controllers/comment.controller');
 
 const router = express.Router();
 
-// const storage = multer.diskStorage({
-//   destination(req, file, cb) {
-//     cb(null, `./assets/${file.fieldname}s`);
-//   },
-//   filename(req, file, cb) {
-//     cb(null, `${req.body.post_id}__${file.originalname}`);
-//   },
-// });
-
 router
   .route('/')
-  .get(auth, commentController.getCommentByPostId)
+  .get(auth, commentController.getComments)
   .post(auth, commentController.createComment)
   .put(auth, commentController.updateComment)
   .delete(auth, commentController.deleteComment);
