@@ -12,7 +12,7 @@ module.exports = (io, socket) => {
     }
     await post.save();
 
-    socket.emit('post:num_like', { num_like: post.users_like.length });
+    socket.emit('post:num_like', { users_like: post.users_like });
 
     return post;
   };
@@ -27,7 +27,7 @@ module.exports = (io, socket) => {
     }
     await post.save();
 
-    socket.emit('post:num_listening', { num_listening: post.users_listening.length });
+    socket.emit('post:num_listening', { users_listening: post.users_listening });
 
     return post;
   };
