@@ -20,11 +20,10 @@ module.exports = (io, socket) => {
   const listenPost = async (payload) => {
     const post = await postService.getPostById(payload.postId);
     if (post.users_listening.some((o) => o === payload.userId)) {
-      const idx = post.users_listening.indexOf(payload.userId);
-      post.users_listening.splice(idx, 1);
-    } else {
-      post.users_listening.push(payload.userId);
+      return;
     }
+    post.users_listening.push(payload.userId);
+
     await post.save();
 
     socket.emit('post:num_listening', { postId: post.id, users_listening: post.users_listening });
