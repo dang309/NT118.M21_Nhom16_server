@@ -38,24 +38,26 @@ const paginate = (schema) => {
 
     const actualFilters = {};
 
-    filters.forEach((filter) => {
-      switch (filter.operator) {
-        case '=':
-          return Object.assign(actualFilters, { [filter.key]: filter.value });
-        case '>':
-          return Object.assign(actualFilters, { [filter.key]: { $gt: filter.value } });
-        case '>=':
-          return Object.assign(actualFilters, { [filter.key]: { $gte: filter.value } });
-        case '<':
-          return Object.assign(actualFilters, { [filter.key]: { $lt: filter.value } });
-        case '<=':
-          return Object.assign(actualFilters, { [filter.key]: { $lte: filter.value } });
-        case 'regex':
-          return Object.assign(actualFilters, { [filter.key]: { $regex: filter.value, $options: 'i' } });
-        default:
-          return actualFilters;
-      }
-    });
+    if (filters && filters.length) {
+      filters.forEach((filter) => {
+        switch (filter.operator) {
+          case '=':
+            return Object.assign(actualFilters, { [filter.key]: filter.value });
+          case '>':
+            return Object.assign(actualFilters, { [filter.key]: { $gt: filter.value } });
+          case '>=':
+            return Object.assign(actualFilters, { [filter.key]: { $gte: filter.value } });
+          case '<':
+            return Object.assign(actualFilters, { [filter.key]: { $lt: filter.value } });
+          case '<=':
+            return Object.assign(actualFilters, { [filter.key]: { $lte: filter.value } });
+          case 'regex':
+            return Object.assign(actualFilters, { [filter.key]: { $regex: filter.value, $options: 'i' } });
+          default:
+            return actualFilters;
+        }
+      });
+    }
 
     const countPromise = this.countDocuments(actualFilters).exec();
     let docsPromise = this.find(actualFilters).sort(sort).skip(skip).limit(limit);
