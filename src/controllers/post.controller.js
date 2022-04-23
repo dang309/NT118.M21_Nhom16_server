@@ -3,6 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { postService } = require('../services');
 const s3 = require('../config/s3');
 const { RES } = require('../utils/RES');
+const pick = require('../utils/pick');
 
 const createPost = catchAsync(async (req, res) => {
   const data = Object.assign(req.body, {
@@ -20,9 +21,9 @@ const createPost = catchAsync(async (req, res) => {
 });
 
 const getPosts = catchAsync(async (req, res) => {
-  // const filter = pick(req.query, ['user_id']);
-  // const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await postService.queryPosts();
+  const { filters } = pick(req.query, ['filters']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const result = await postService.queryPosts(JSON.parse(filters), options);
   res.send(RES(HTTP_STATUS.OK, '', true, result));
 });
 

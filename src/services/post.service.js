@@ -20,8 +20,8 @@ const createPost = async (postBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryPosts = async () => {
-  const posts = await Post.find({});
+const queryPosts = async (filters, options) => {
+  const posts = await Post.paginate(filters, options);
   return posts;
 };
 
