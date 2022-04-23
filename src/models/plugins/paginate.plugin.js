@@ -50,6 +50,8 @@ const paginate = (schema) => {
           return Object.assign(actualFilters, { [filter.key]: { $lt: filter.value } });
         case '<=':
           return Object.assign(actualFilters, { [filter.key]: { $lte: filter.value } });
+        case 'regex':
+          return Object.assign(actualFilters, { [filter.key]: { $regex: filter.value, $options: 'i' } });
         default:
           return actualFilters;
       }

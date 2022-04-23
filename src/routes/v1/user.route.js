@@ -23,9 +23,9 @@ const upload = multer({
 router
   .route('/')
   .post(auth, validate(userValidation.createUser), userController.createUser)
-  .get(auth, validate(userValidation.getUsers), userController.getUsers);
+  .get(auth, userController.getUsers);
 
-router.get('/avatar/:userId', userController.getAvatar)
+router.get('/avatar/:userId', userController.getAvatar);
 
 router
   .route('/:userId')
