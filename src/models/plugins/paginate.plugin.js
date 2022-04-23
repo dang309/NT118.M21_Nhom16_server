@@ -20,23 +20,25 @@ const paginate = (schema) => {
    * @returns {Promise<QueryResult>}
    */
   schema.statics.paginate = async function (filters, options) {
-    let sort = '';
-    if (options.sortBy) {
-      const sortingCriteria = [];
-      options.sortBy.split(',').forEach((sortOption) => {
-        const [key, order] = sortOption.split(':');
-        sortingCriteria.push((order === 'desc' ? '-' : '') + key);
-      });
-      sort = sortingCriteria.join(' ');
-    } else {
-      sort = 'createdAt';
-    }
-
-    const limit = options.limit && parseInt(options.limit, 10) > 0 ? parseInt(options.limit, 10) : 10;
-    const page = options.page && parseInt(options.page, 10) > 0 ? parseInt(options.page, 10) : 1;
-    const skip = (page - 1) * limit;
-
+    let sort = 'createdAt';
     const actualFilters = {};
+    let limit = 10;
+    let page = 1;
+    let skip = 0;
+    if (options) {
+      if (options.sortBy) {
+        const sortingCriteria = [];
+        options.sortBy.split(',').forEach((sortOption) => {
+          const [key, order] = sortOption.split(':');
+          sortingCriteria.push((order === 'desc' ? '-' : '') + key);
+        });
+        sort = sortingCriteria.join(' ');
+      }
+
+      limit = options.limit && parseInt(options.limit, 10) > 0 ? parseInt(options.limit, 10) : 10;
+      page = options.page && parseInt(options.page, 10) > 0 ? parseInt(options.page, 10) : 1;
+      skip = (page - 1) * limit;
+    }
 
     if (filters && filters.length) {
       filters.forEach((filter) => {
