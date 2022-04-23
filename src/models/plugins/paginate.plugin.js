@@ -41,7 +41,7 @@ const paginate = (schema) => {
     }
 
     if (filters && filters.length) {
-      filters.forEach((filter) => {
+      JSON.parse(filters).forEach((filter) => {
         switch (filter.operator) {
           case '=':
             return Object.assign(actualFilters, { [filter.key]: filter.value });

@@ -23,7 +23,7 @@ const createPost = catchAsync(async (req, res) => {
 const getPosts = catchAsync(async (req, res) => {
   const { filters } = pick(req.query, ['filters']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await postService.queryPosts(JSON.parse(filters), options);
+  const result = await postService.queryPosts(filters, options);
   res.send(RES(HTTP_STATUS.OK, '', true, result));
 });
 
