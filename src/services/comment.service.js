@@ -18,8 +18,8 @@ const createComment = async (commentBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryComments = async (filter, options) => {
-  const comments = await Comment.paginate(filter, options);
+const queryComments = async (filters, options) => {
+  const comments = await Comment.paginate(filters, options);
   return comments;
 };
 

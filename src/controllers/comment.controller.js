@@ -11,7 +11,7 @@ const createComment = catchAsync(async (req, res) => {
 });
 
 const getComments = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['post_id']);
+  const filter = pick(req.query, ['filters']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await commentService.queryComments(filter, options);
   res.send(RES(httpStatus.OK, '', true, result));
