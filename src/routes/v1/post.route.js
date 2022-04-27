@@ -35,14 +35,16 @@ router
       { name: 'thumbnail', maxCount: 1 },
     ]),
     postController.createPost
-  )
-  .put(auth, postController.updatePost)
-  .delete(auth, postController.deletePost);
+  );
 
 router.get('/sound/:postId', postController.getSound);
 router.get('/thumbnail/:postId', postController.getThumbnail);
 
-router.route('/:postId').get(auth, validate(postValidation.getPost), postController.getPost);
+router
+  .route('/:postId')
+  .get(auth, validate(postValidation.getPost), postController.getPost)
+  .put(auth, postController.updatePost)
+  .delete(auth, postController.deletePost);
 
 module.exports = router;
 
