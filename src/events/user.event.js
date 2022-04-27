@@ -12,7 +12,7 @@ module.exports = (io, socket) => {
       userDestination.followers.splice(idxDestination, 1);
     } else {
       userSource.following.push(payload.userIdDestination);
-      userDestination.followers.push(payload.userIdTarget);
+      userDestination.followers.push(payload.userIdSource);
     }
     await userSource.save();
     await userDestination.save();
