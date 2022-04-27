@@ -1,5 +1,7 @@
 // const mongoose = require('mongoose');
-const { Post } = require('../models');
+const { Post, Comment } = require('../models');
+
+const s3 = require('../../config/s3');
 
 /**
  * Create a post
@@ -54,6 +56,12 @@ const updatePostById = async (postId, updateBody) => {
  */
 const deletePostById = async (postId) => {
   const post = await getPostById(postId);
+  await Comment.deleteMany({ post_id: post._id });
+  const soundParams = { Bucket: post.sound.bucket, Key: post.sound.key };
+  const thumbnailParams = { Bucket: post.thumbnail.bucket, Key: post.thumbnail.key };
+  // TODO: Test it
+  await s3.deleteObject(soundParams);
+  await s3.deleteObject(thumbnailParams);
   await post.remove();
   return post;
 };
