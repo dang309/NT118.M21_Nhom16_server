@@ -1,4 +1,3 @@
-const _omit = require('lodash/omit');
 const { Conversation, Message } = require('../models');
 
 module.exports = (io, socket) => {
