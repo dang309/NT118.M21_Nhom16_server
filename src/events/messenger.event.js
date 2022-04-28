@@ -12,6 +12,7 @@ module.exports = (io, socket) => {
       ],
     });
     if (conversation) {
+      socket.emit('messenger:room_id', conversation[0]._id);
       return;
     }
     const newConversation = await Conversation.create({ first_user_id: firstUserId, second_user_id: secondUserId });
