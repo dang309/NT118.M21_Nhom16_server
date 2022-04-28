@@ -55,6 +55,10 @@ const paginate = (schema) => {
             return Object.assign(actualFilters, { [filter.key]: { $lte: filter.value } });
           case 'regex':
             return Object.assign(actualFilters, { [filter.key]: { $regex: filter.value, $options: 'i' } });
+          case 'or': // only for find conversation by user's id case
+            return Object.assign(actualFilters, {
+              $or: [{ [filter.key[0]]: filter.value }, { [filter.key[1]]: filter.value }],
+            });
           default:
             return actualFilters;
         }
