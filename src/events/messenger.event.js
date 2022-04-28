@@ -12,11 +12,11 @@ module.exports = (io, socket) => {
       ],
     });
     if (conversation) {
-      socket.emit('messenger:room_id', conversation[0]._id);
+      socket.emit('messenger:room_id', { conversationId: conversation[0]._id, secondUserId });
       return;
     }
     const newConversation = await Conversation.create({ first_user_id: firstUserId, second_user_id: secondUserId });
-    socket.emit('messenger:room_id', newConversation._id);
+    socket.emit('messenger:room_id', { conversationId: newConversation._id, secondUserId });
   };
 
   const sendPrivateMessage = async (payload) => {
