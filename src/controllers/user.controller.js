@@ -29,6 +29,7 @@ const getUser = catchAsync(async (req, res) => {
 
 const getAvatar = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
+  if (!user.avatar.bucket.length || !user.avatar.key.length) return;
   s3.getObject({ Bucket: user.avatar.bucket, Key: user.avatar.key }).createReadStream().pipe(res);
 });
 
