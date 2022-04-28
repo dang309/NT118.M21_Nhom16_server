@@ -59,6 +59,8 @@ const paginate = (schema) => {
             return Object.assign(actualFilters, {
               $or: [{ [filter.key[0]]: filter.value }, { [filter.key[1]]: filter.value }],
             });
+          case 'in':
+            return Object.assign(actualFilters, { [filter.key]: { $in: filter.value } });
           default:
             return actualFilters;
         }
