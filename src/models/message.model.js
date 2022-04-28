@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON } = require('./plugins');
+const { toJSON, paginate } = require('./plugins');
 
 const messageSchema = mongoose.Schema(
   {
@@ -30,6 +30,7 @@ const messageSchema = mongoose.Schema(
 
 // add plugin that converts mongoose to json
 messageSchema.plugin(toJSON);
+messageSchema.plugin(paginate);
 
 /**
  * @typedef Message
