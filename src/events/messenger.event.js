@@ -11,7 +11,7 @@ module.exports = (io, socket) => {
         { second_user_id: secondUserId },
       ],
     });
-    if (conversation && conversation._id) {
+    if (conversation) {
       return;
     }
     const newConversation = await Conversation.create({ first_user_id: firstUserId, second_user_id: secondUserId });
