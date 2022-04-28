@@ -3,6 +3,17 @@ const { Conversation, Message } = require('../models');
 module.exports = (io, socket) => {
   const createRoom = async (payload) => {
     const { firstUserId, secondUserId } = payload;
+    const conversation = await Conversation.find({
+      $or: [
+        { first_user_id: firstUserId },
+        { second_user_id: firstUserId },
+        { first_user_id: secondUserId },
+        { second_user_id: secondUserId },
+      ],
+    });
+    if (conversation && conversation._id) {
+      return;
+    }
     const newConversation = await Conversation.create({ first_user_id: firstUserId, second_user_id: secondUserId });
     socket.emit('messenger:room_id', newConversation._id);
   };
