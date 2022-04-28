@@ -1,7 +1,7 @@
 // const mongoose = require('mongoose');
 const { Post, Comment } = require('../models');
 
-const s3 = require('../../config/s3');
+const s3 = require('../config/s3');
 
 /**
  * Create a post

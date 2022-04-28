@@ -16,7 +16,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
-const { postEvents, userEvents } = require('./events');
+const { postEvents, userEvents, messengerEvents } = require('./events');
 
 const app = express();
 
@@ -34,6 +34,7 @@ const io = new Server(httpServer, {
 const onConnection = (socket) => {
   postEvents(io, socket);
   userEvents(io, socket);
+  messengerEvents(io, socket);
 };
 
 io.on('connection', onConnection);
