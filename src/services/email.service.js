@@ -19,8 +19,8 @@ if (config.env !== 'test') {
  * @param {string} text
  * @returns {Promise}
  */
-const sendEmail = async (to, subject, text) => {
-  const msg = { from: config.email.from, to, subject, text };
+const sendEmail = async (to, subject, html) => {
+  const msg = { from: config.email.from, to, subject, html };
   await transport.sendMail(msg);
 };
 
@@ -44,7 +44,7 @@ const sendResetPasswordEmail = async (to, token) => {
  */
 const sendVerificationEmail = async (to, otp) => {
   const subject = 'Xác thực Email';
-  const text = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+  const html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
   <div style="margin:50px auto;width:70%;padding:20px 0">
     <div style="border-bottom:1px solid #eee">
       <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Nhom16</a>
@@ -61,7 +61,7 @@ const sendVerificationEmail = async (to, otp) => {
     </div>
   </div>
 </div>`;
-  await sendEmail(to, subject, text);
+  await sendEmail(to, subject, html);
 };
 
 module.exports = {
