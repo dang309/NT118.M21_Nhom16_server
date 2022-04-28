@@ -22,7 +22,7 @@ module.exports = (io, socket) => {
   const sendPrivateMessage = async (payload) => {
     const { conversationId, content, from, to } = payload;
     const newMessage = await Message.create({ conversation_id: conversationId, content, from, to });
-    socket.to(conversationId).emit('messenger:send_private_message', newMessage);
+    socket.emit('messenger:send_private_message', newMessage);
   };
 
   socket.on('messenger:create_room', createRoom);
