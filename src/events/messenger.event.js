@@ -6,12 +6,17 @@ module.exports = (io, socket) => {
     socket.join(userId);
   };
 
-  const sendPrivateMessage = async (payload) => {
+  const sendPrivateMessages = async (payload) => {
     const { content, from, to } = payload;
     socket.to(to).emit('messenger:send_private_message', { content, from, to });
     await Message.create({ content, from, to });
   };
 
+  const readMessages = async () => {
+    await Message.updateMany({ is_unread: true }, { $set: { is_unread: false } }, { multi: true });
+  };
+
   socket.on('messenger:create_room', createRoom);
-  socket.on('messenger:send_private_message', sendPrivateMessage);
+  socket.on('messenger:send_private_message', sendPrivateMessages);
+  socket.on('messenger:read_message', readMessages);
 };

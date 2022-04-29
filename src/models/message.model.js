@@ -17,7 +17,7 @@ const messageSchema = mongoose.Schema(
     },
     is_unread: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   {
