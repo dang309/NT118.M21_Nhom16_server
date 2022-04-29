@@ -16,11 +16,6 @@ const getMessages = catchAsync(async (req, res) => {
   res.send(RES(httpStatus.OK, '', true, result));
 });
 
-const getMessageByPostId = catchAsync(async (req, res) => {
-  const message = await messageService.getMessageByPostId(req.params.postId);
-  res.send(RES(httpStatus.OK, '', true, message));
-});
-
 const updateMessage = catchAsync(async (req, res) => {
   const message = await messageService.updateMessageById(req.params.messageId, req.body);
   res.send(RES(httpStatus.OK, '', true, message));
@@ -34,7 +29,6 @@ const deleteMessage = catchAsync(async (req, res) => {
 module.exports = {
   createMessage,
   getMessages,
-  getMessageByPostId,
   updateMessage,
   deleteMessage,
 };

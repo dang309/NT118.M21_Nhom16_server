@@ -29,11 +29,7 @@ const queryMessages = async (filters, options) => {
  * @returns {Promise<Message>}
  */
 const getMessageById = async (id) => {
-  return Message.findById(id);
-};
-
-const getMessageByPostId = async (postId) => {
-  return Message.find({ post_id: postId });
+  return Message.findById({ message_id: id });
 };
 
 /**
@@ -64,7 +60,6 @@ module.exports = {
   createMessage,
   queryMessages,
   getMessageById,
-  getMessageByPostId,
   updateMessageById,
   deleteMessageById,
 };
