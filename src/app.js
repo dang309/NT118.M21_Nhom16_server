@@ -32,6 +32,11 @@ const io = new Server(httpServer, {
 });
 
 const onConnection = (socket) => {
+  socket.on('create_room', (payload) => {
+    const { userId } = payload;
+    socket.join(userId);
+  });
+
   postEvents(io, socket);
   userEvents(io, socket);
   messengerEvents(io, socket);
