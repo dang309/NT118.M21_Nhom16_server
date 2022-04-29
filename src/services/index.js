@@ -7,5 +7,4 @@ module.exports.commentService = require('./comment.service');
 module.exports.notificationService = require('./notification.service');
 module.exports.genreService = require('./genre.service');
 module.exports.hashtagService = require('./hashtag.service');
-module.exports.conversationService = require('./conversation.service');
 module.exports.messageService = require('./message.service');
