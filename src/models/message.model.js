@@ -15,6 +15,10 @@ const messageSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    is_unread: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: {
