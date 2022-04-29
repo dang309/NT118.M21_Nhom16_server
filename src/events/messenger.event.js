@@ -8,7 +8,7 @@ module.exports = (io, socket) => {
 
   const sendPrivateMessages = async (payload) => {
     const { content, from, to } = payload;
-    socket.to(to).emit('messenger:send_private_message', { content, from, to });
+    io.to(to).emit('messenger:send_private_message', { content, from, to });
     await Message.create({ content, from, to });
   };
 
