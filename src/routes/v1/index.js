@@ -5,6 +5,7 @@ const postRoute = require('./post.route');
 const commentRoute = require('./comment.route');
 const genreRoute = require('./genre.route');
 const hashtagRoute = require('./hashtag.route');
+const contactRoute = require('./contact.route');
 const messageRoute = require('./message.route');
 const docsRoute = require('./docs.route');
 
@@ -34,6 +35,10 @@ const defaultRoutes = [
   {
     path: '/hashtags',
     route: hashtagRoute,
+  },
+  {
+    path: '/contacts',
+    route: contactRoute,
   },
   {
     path: '/messages',
