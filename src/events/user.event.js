@@ -1,4 +1,5 @@
-const { userService } = require('../services');
+const { Notification } = require('../models');
+const { userService, postService } = require('../services');
 
 module.exports = (io, socket) => {
   const toggleFollow = async (payload) => {
@@ -21,5 +22,27 @@ module.exports = (io, socket) => {
     socket.emit('user:num_followers', { userId: userDestination.id, num_followers: userDestination.followers });
   };
 
+  const bookmarkPost = async (payload) => {
+    const { userId, postId } = payload;
+    const user = await userService.getUserById(userId);
+    const post = await postService.getPostById(postId);
+    if (user.bookmarked_posts.some((o) => o === postId)) {
+      return;
+    }
+    if (post.user_id !== userId) {
+      const newNotification = await Notification.create({
+        user_id: userId,
+        opponent_id: post.user_id,
+        action: 'Bookmarked',
+        source_post_id: postId,
+      });
+      socket.emit('notification:send_notification', newNotification);
+    }
+    user.bookmarked_posts.push(postId);
+
+    await user.save();
+  };
+
   socket.on('user:toggle_follow', toggleFollow);
+  socket.on('user:add_bookmarked_post', bookmarkPost);
 };
