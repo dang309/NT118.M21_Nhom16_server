@@ -1,8 +1,9 @@
 const { Notification } = require('../models');
 
 module.exports = (io, socket) => {
-  const readNotifications = async () => {
-    await Notification.updateMany({ is_unread: true }, { $set: { is_unread: false } }, { multi: true });
+  const readNotifications = async (payload) => {
+    const { notiId } = payload;
+    await Notification.updateOne({ _id: notiId }, { $set: { is_unread: false } });
   };
 
   socket.on('notification:read_notification', readNotifications);
