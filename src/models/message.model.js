@@ -7,8 +7,7 @@ const messageSchema = mongoose.Schema(
       type: String,
     },
     contact_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Contact',
+      type: String,
     },
     content: {
       type: String,
