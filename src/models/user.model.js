@@ -89,6 +89,10 @@ const userSchema = mongoose.Schema(
       type: String,
       default: '',
     },
+    sex: {
+      type: Boolean,
+      default: null,
+    },
   },
   {
     timestamps: {
