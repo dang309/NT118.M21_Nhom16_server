@@ -45,6 +45,8 @@ const paginate = (schema) => {
         switch (filter.operator) {
           case '=':
             return Object.assign(actualFilters, { [filter.key]: filter.value });
+          case 'not':
+            return Object.assign(actualFilters, { [filter.key]: { $ne: filter.value } });
           case '>':
             return Object.assign(actualFilters, { [filter.key]: { $gt: filter.value } });
           case '>=':
