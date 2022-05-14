@@ -34,14 +34,17 @@ const getAvatar = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const data = Object.assign(req.body, {
-    avatar: {
-      bucket: req.file.bucket,
-      key: req.file.key,
-    },
-  });
+  const data = req.body;
+  if (req.file) {
+    Object.assign(data, {
+      avatar: {
+        bucket: req.file.bucket,
+        key: req.file.key,
+      },
+    });
+  }
   const user = await userService.updateUserById(req.params.userId, data);
-  res.send(RES(httpStatus.OK, '', true, user));
+  res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, user));
 });
 
 const deleteUser = catchAsync(async (req, res) => {
