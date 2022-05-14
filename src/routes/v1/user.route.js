@@ -29,7 +29,7 @@ router.get('/avatar/:userId', userController.getAvatar);
 
 router
   .route('/:userId')
-  .get(auth, validate(userValidation.getUser), userController.getUser)
+  .get(auth, userController.getUser)
   .put(auth, upload.single('avatar'), userController.updateUser)
   .delete(auth, validate(userValidation.deleteUser), userController.deleteUser);
 
