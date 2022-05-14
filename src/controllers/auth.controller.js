@@ -1,12 +1,10 @@
 const httpStatus = require('http-status');
-const { totp } = require('otplib');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 
 const { generateToken } = require('../utils/2fa');
 
 const { RES } = require('../utils/RES');
-const logger = require('../config/logger');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -33,7 +31,6 @@ const refreshTokens = catchAsync(async (req, res) => {
 
 const forgotPassword = catchAsync(async (req, res) => {
   const token = generateToken(process.env.TOTP_SECRET);
-  logger.info(process.env.TOTP_SECRET);
   await emailService.sendVerificationEmail(req.body.email, token);
   res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
@@ -44,8 +41,8 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
-  const timeOTP = totp.generate(req.user.email + process.env.TOTP_SECRET);
-  await emailService.sendVerificationEmail(req.user.email, timeOTP);
+  const token = generateToken(process.env.TOTP_SECRET);
+  await emailService.sendVerificationEmail(req.user.email, token);
   res.status(httpStatus.OK).send(RES(httpStatus.OK, '', true, null));
 });
 
