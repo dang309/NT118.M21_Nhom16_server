@@ -35,7 +35,7 @@ const getAvatar = catchAsync(async (req, res) => {
 
 const updateUser = catchAsync(async (req, res) => {
   const data = req.body;
-  if (req.file) {
+  if (req.file && req.file.bucket.length && req.file.key.length) {
     Object.assign(data, {
       avatar: {
         bucket: req.file.bucket,
