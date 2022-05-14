@@ -17,7 +17,7 @@ module.exports = (io, socket) => {
           action: 'Liked',
           source_post_id: postId,
         });
-        socket.emit('notification:send_notification', newNotification);
+        socket.to(post.user_id).emit('notification:send_notification', newNotification);
       }
       post.users_like.push(userId);
     }
@@ -41,7 +41,7 @@ module.exports = (io, socket) => {
         action: 'Listened',
         source_post_id: postId,
       });
-      socket.emit('notification:send_notification', newNotification);
+      socket.to(post.user_id).emit('notification:send_notification', newNotification);
     }
     post.users_listening.push(userId);
 
